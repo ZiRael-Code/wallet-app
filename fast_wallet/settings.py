@@ -93,9 +93,9 @@ WSGI_APPLICATION = 'fast_wallet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'e_wallet_db',
-        'USER': 'postgres',
-        'PASSWORD': 'opemip@1',
+        'NAME': os.environ.get('NAME'),
+        'USER': os.environ.get('USER'),
+        'PASSWORD': os.environ.get('PASSWORD'),
         'HOST': 'localhost'
     }
 }
