@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
@@ -30,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['4480-62-173-45-70.ngrok-free.app', 'localhost', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['c79f-62-173-45-70.ngrok-free.app', 'localhost', '0.0.0.0', '127.0.0.1','wallet-app-24ay.onrender.com']
 
 # Application definition
 
@@ -92,19 +91,24 @@ WSGI_APPLICATION = 'fast_wallet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
-}
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
+# }
 
 # Fallback settings for local development
-if not DATABASES['default']:
-    DATABASES['default'] = {
+# if not DATABASES['default']:
+DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('NAME'),
         'USER': os.environ.get('USER'),
         'PASSWORD': os.environ.get('PASSWORD'),
         'HOST': 'localhost'
     }
+}
+
+DATABASES["default"] = dj_database_url.parse(os.environ.get('DATABASE_URL'))
+
 
 AUTH_USER_MODEL = "user.User"
 # Password validation

@@ -23,9 +23,10 @@ class UserServiceImp(UserService):
         username = request.data.get('username', None)
         password = request.data.get('password', None)
         user = authenticate(username=username, password=password)
+        print(user)
         if user:
             get_user = User.objects.get(username=username)
             token = get_tokens_for_user(get_user)
             return token
         else:
-            InvalidDetailsException("Invalid credential")
+            raise  InvalidDetailsException("Invalid credential")

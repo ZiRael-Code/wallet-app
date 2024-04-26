@@ -14,6 +14,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password']
 
     def create(self, validated_data):
+        pin = validated_data.g
         user = User.objects.create_user(**validated_data)
         E_Wallet.objects.create(user_id=user.pk)
         return user

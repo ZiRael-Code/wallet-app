@@ -12,6 +12,10 @@ from fast_wallet import settings
 
 from walletApp.services.walletApp_service import WalletAppServiceImpl
 from walletApp.services.wallet_service import WalletAppService
+from .exception.amount_exception import AmountException
+from .exception.insufficient_funds import InsufficientFundsException
+from .exception.invalid_pin import InvalidPinException
+from .exception.wallet_exception import WalletNotExistException
 from .models import Transaction
 from .util.mapper import map_fund_request, map_transfer_request
 from .serializer import TransactionSerializer
@@ -22,6 +26,7 @@ payment: WalletAppService = WalletAppServiceImpl()
 
 class VerifyPayment(APIView):
     def post(self, request):
+        print(request)
         response = payment.verify_payment(request)
         return Response(response.get_message(), status=status.HTTP_200_OK)
 
@@ -30,17 +35,29 @@ class FundWallet(GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        response = payment.fund_wallet(map_fund_request(request.data, request.user))
-        return Response(response.get_message(), status=status.HTTP_200_OK)
+        try:
+            response = payment.fund_wallet(map_fund_request(request.data, request.user))
+            return Response(response.get_message(), status=status.HTTP_200_OK)
+        except AmountException as exception:
+            return Response({"Message": exception.get_message()}, status=status.HTTP_400_BAD_REQUEST)
+        except WalletNotExistException as exception:
+            return Response({"Message": exception.get_message()}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Withdraw(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        response = payment.withdraw(map_transfer_request(request.data, request.user))
-        serializer = TransactionSerializer(response)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            response = payment.withdraw(map_transfer_request(request.data, request.user))
+            serializer = TransactionSerializer(response)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except InsufficientFundsException as exception:
+            return Response({'message': exception.get_message()}, status=status.HTTP_400_BAD_REQUEST)
+        except WalletNotExistException as exception:
+            return Response({'message': exception.get_message()}, status=status.HTTP_400_BAD_REQUEST)
+        except InvalidPinException as exception:
+            return Response({'message': exception.get_message()}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Transactions(APIView):
@@ -56,5 +73,8 @@ class GetBalance(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        response = payment.get_balance(request.user)
-        return Response({"balance": response}, status=status.HTTP_200_OK)
+        try:
+            response = payment.get_balance(request.user)
+            return Response({"balance": response}, status=status.HTTP_200_OK)
+        except WalletNotExistException as exception:
+            return Response({"Message:", exception.get_message()}, status=status.HTTP_400_BAD_REQUEST)

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework.utils import json
 from rest_framework.views import APIView
 
 from .exception.Invalid_details import InvalidDetailsException
@@ -22,5 +23,8 @@ class register(APIView):
 
 class login(GenericAPIView):
     def post(self, request):
-        response = users.login(request)
-        return Response(response, status=status.HTTP_200_OK)
+        try:
+            response = users.login(request)
+            return Response(response, status=status.HTTP_200_OK)
+        except InvalidDetailsException as exception:
+            return Response({"message": exception.get_message()}, status=status.HTTP_400_BAD_REQUEST)

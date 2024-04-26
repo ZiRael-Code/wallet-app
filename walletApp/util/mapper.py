@@ -36,13 +36,14 @@ def update_wallet_successful(data, payment_type):
     transaction = Transaction.objects.get(reference=reference)
     transaction.paymentStatus = PaymentStatus.successful
     transaction.save()
-    amount = data['amount']
+    amount_in_kobo = data['amount']
     wallet = E_Wallet.objects.get(pk=transaction.wallet_id_id)
     if payment_type == "transfer":
-        wallet.balance = wallet.get_balance - amount
+        wallet.balance = wallet.get_balance - amount_in_kobo
         wallet.save()
     else:
-        wallet.balance = wallet.get_balance + amount
+        amount_in_naira = amount_in_kobo / 100
+        wallet.balance = wallet.get_balance + amount_in_naira
         wallet.save()
 
 
