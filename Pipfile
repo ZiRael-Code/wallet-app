@@ -9,6 +9,8 @@ psycopg2 = "*"
 djangorestframework = "*"
 requests = "*"
 python-dotenv = "*"
+dj-database-url = "*"
+gunicorn = "*"
 
 [dev-packages]
 
