@@ -13,6 +13,8 @@ from walletApp.dto.response.withdrawl_response import WithdrawResponse
 from walletApp.enum.payment_status import PaymentStatus
 from walletApp.enum.payment_type import PaymentType
 from walletApp.exception.amount_exception import AmountException
+from walletApp.exception.insufficient_funds import InsufficientFundsException
+from walletApp.exception.invalid_pin import InvalidPinException
 from walletApp.exception.wallet_exception import WalletNotExistException
 from walletApp.models import Transaction, E_Wallet
 from walletApp.services.wallet_service import WalletAppService
@@ -40,6 +42,10 @@ class WalletAppServiceImpl(WalletAppService):
     def withdraw(self, request: WithdrawalRequest):
         generate_reference = generate_unique_id()
         wallet = self.get_wallet(request.get_email())
+        if wallet.get_balance < request.get_amount():
+            raise InsufficientFundsException("Insufficient funds")
+        if request.get_wallet_pin() != wallet.pin:
+            raise InvalidPinException("Invalid Pin")
         transaction = map_transaction(amount=request.get_amount(), description=request.get_description(),
                                       reference=generate_reference, wallet_id=wallet.id,
                                       payment_type=PaymentType.transfer)
@@ -49,6 +55,8 @@ class WalletAppServiceImpl(WalletAppService):
                                                                    account_number=request.get_account_number(),
                                                                    reference=generate_reference))
         return transaction
+
+
 
     def verify_payment(self,request):
         data = self._payment_service.verify_payment(request)

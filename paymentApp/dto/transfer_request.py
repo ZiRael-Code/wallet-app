@@ -1,6 +1,6 @@
 class TransferRequest:
 
-    def __init__(self, amount, description, bank_name, account_number,reference):
+    def __init__(self, amount, description, bank_name, account_number, reference):
         self._amount = amount
         self._bank_name = bank_name
         self._account_number = account_number
@@ -9,6 +9,9 @@ class TransferRequest:
 
     def set_amount(self, amount):
         self._amount = amount
+
+
+
 
     def set_bank_name(self, bank_name):
         self._bank_name = bank_name
@@ -36,3 +39,4 @@ class TransferRequest:
 
     def get_description(self):
         return self._description
+

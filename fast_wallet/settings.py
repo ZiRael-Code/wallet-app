@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 from datetime import timedelta
+import dj_database_url
 
 from dotenv import load_dotenv
 import os
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'walletApp',
     'paymentApp',
     'rest_framework_simplejwt',
+
 ]
 
 REST_FRAMEWORK = {
@@ -91,14 +93,19 @@ WSGI_APPLICATION = 'fast_wallet.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
+
+# Fallback settings for local development
+if not DATABASES['default']:
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('NAME'),
         'USER': os.environ.get('USER'),
         'PASSWORD': os.environ.get('PASSWORD'),
         'HOST': 'localhost'
     }
-}
+
 
 AUTH_USER_MODEL = "user.User"
 # Password validation

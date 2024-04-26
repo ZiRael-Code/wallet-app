@@ -20,3 +20,4 @@ class WalletAppService:
 
     def get_all_transaction(self, user):
         pass
+

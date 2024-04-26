@@ -65,7 +65,6 @@ class PayStackService(PaymentService):
     def transfer(self, request: TransferRequest):
         recipient = self.create_transfer_recipient(
             RecipientRequest(request.get_bank_name(), request.get_account_number()))
-        print(recipient)
         payload = {
             "source": "balance",
             "amount": request.get_amount(),

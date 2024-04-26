@@ -8,3 +8,7 @@ def get_tokens_for_user(user):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
+
+
+def generate_account_number(phone_number: int):
+    return phone_number[2:]
