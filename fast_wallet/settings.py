@@ -16,10 +16,10 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'fast_wallet.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
 }
 
 # Fallback settings for local development
@@ -105,7 +105,6 @@ if not DATABASES['default']:
         'PASSWORD': os.environ.get('PASSWORD'),
         'HOST': 'localhost'
     }
-
 
 AUTH_USER_MODEL = "user.User"
 # Password validation
