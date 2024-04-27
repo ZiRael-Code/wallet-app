@@ -27,7 +27,7 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['c79f-62-173-45-70.ngrok-free.app', 'localhost', '0.0.0.0', '127.0.0.1',
                  'wallet-app-24ay.onrender.com']
@@ -97,13 +97,6 @@ WSGI_APPLICATION = 'fast_wallet.wsgi.application'
 # }
 
 # Fallback settings for local development
-# if not DATABASES['default']:
-# if not DEBUG:
-#     DATABASES = {
-#         'default':
-#         \dj_database_url.parse(os.environ.get('DATABASE_URL'))
-#     }
-# else:
 DATABASES = {
     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
 }
