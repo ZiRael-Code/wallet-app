@@ -27,7 +27,7 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['c79f-62-173-45-70.ngrok-free.app', 'localhost', '0.0.0.0', '127.0.0.1',
                  'wallet-app-24ay.onrender.com']
