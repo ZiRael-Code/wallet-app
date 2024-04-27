@@ -37,7 +37,7 @@ class FundWallet(GenericAPIView):
     def post(self, request):
         try:
             response = payment.fund_wallet(map_fund_request(request.data, request.user))
-            return Response(response.get_message(), status=status.HTTP_200_OK)
+            return Response({"message":response.get_message()}, status=status.HTTP_200_OK)
         except AmountException as exception:
             return Response({"Message": exception.get_message()}, status=status.HTTP_400_BAD_REQUEST)
         except WalletNotExistException as exception:
