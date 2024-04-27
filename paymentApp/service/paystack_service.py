@@ -24,6 +24,7 @@ class PayStackService(PaymentService):
             "email": request.get_email(),
             "amount": request.amount,
         }, auth=self._token)
+        print(responses.json()["data"])
         return responses.json()["data"]
 
     def find_bank(self, request: FindBankRequest):
