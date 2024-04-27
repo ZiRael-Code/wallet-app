@@ -24,7 +24,7 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r664az5s+!dh)8ry!3wu)i1o$48rfl-=h78u0dc&&51b0idl7f'
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -92,11 +92,9 @@ WSGI_APPLICATION = 'fast_wallet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
-# }
 
 # Fallback settings for local development
+# Render DataBase Configuration
 DATABASES = {
     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
 }
@@ -149,6 +147,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Paystack configuration
 
 PAYSTACK_SECRETE_KEY = os.environ.get('PAYSTACK_SECRETE_KEY')
 PAYSTACK_INITIALIZE_TRANSACTION_URL = os.environ.get('PAYSTACK_INITIALIZE_TRANSACTION_URL')

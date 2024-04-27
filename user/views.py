@@ -14,6 +14,7 @@ users = UserServiceImp()
 
 class register(APIView):
     def post(self, request):
+        print(request)
         try:
             result = users.register(request)
             return Response(result, status=status.HTTP_200_OK)
